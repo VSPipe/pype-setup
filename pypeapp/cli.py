@@ -124,6 +124,15 @@ def mongodb():
 
 
 @main.command()
+@click.option("-d", "--develop", is_flag=True, help="Adds develop buttons.")
+def settings(develop):
+    """
+    This will launch local mongodb server. Useful for development.
+    """
+    PypeLauncher().launch_settings_gui(develop)
+
+
+@main.command()
 @click.option("-d", "--debug", is_flag=True, help="Print debug messages")
 @click.option("--ftrack-url", envvar="FTRACK_SERVER",
               help="Ftrack server url")
@@ -140,6 +149,10 @@ def mongodb():
               help="store provided credentials")
 @click.option("--legacy", is_flag=True,
               help="run event server without mongo storing")
+@click.option("--clockify-api-key", envvar="CLOCKIFY_API_KEY",
+              help="Clockify API key.")
+@click.option("--clockify-workspace", envvar="CLOCKIFY_WORKSPACE",
+              help="Clockify workspace")
 def eventserver(debug,
                 ftrack_url,
                 ftrack_user,
@@ -147,7 +160,9 @@ def eventserver(debug,
                 ftrack_events_path,
                 no_stored_credentials,
                 store_credentials,
-                legacy):
+                legacy,
+                clockify_api_key,
+                clockify_workspace):
     """
     This command launches ftrack event server.
 
@@ -176,7 +191,7 @@ def eventserver(debug,
         args.append(ftrack_api_key)
 
     if ftrack_events_path:
-        args.append('-ftrackapikey')
+        args.append('-ftrackeventpaths')
         args.append(ftrack_events_path)
 
     if no_stored_credentials:
@@ -187,6 +202,14 @@ def eventserver(debug,
 
     if legacy:
         args.append('-legacy')
+
+    if clockify_api_key:
+        args.append('-clockifyapikey')
+        args.append(clockify_api_key)
+
+    if clockify_workspace:
+        args.append('-clockifyworkspace')
+        args.append(clockify_workspace)
 
     PypeLauncher().launch_eventservercli(args)
 

@@ -16,4 +16,4 @@ DIR=`dirname "${THIS}"`
 export PYPE_SETUP_PATH="$(cd $DIR/../ ; pwd)"
 export PYPE_DEBUG=3
 
-gnome-terminal -- "$PYPE_SETUP_PATH/pype" tray --debug
+source "$PYPE_SETUP_PATH/pype" tray --debug
